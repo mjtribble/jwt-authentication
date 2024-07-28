@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_27_184259) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_28_010044) do
+  create_table "refresh_tokens", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "secret", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "revoked_at"
+    t.datetime "replaced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_refresh_tokens_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -18,4 +29,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_27_184259) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "refresh_tokens", "users"
 end

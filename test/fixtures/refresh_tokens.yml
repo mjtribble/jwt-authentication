@@ -1,0 +1,18 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+expired: {
+  user: one,
+  secret: "expired-secret",
+  expires_at: "2021-07-01 00:00:00",
+}
+active: {
+  user: one,
+  secret: "active-secret",
+  expires_at: <%= 1.day.from_now %>,
+}
+revoked: {
+  user: one,
+  secret: "revoked-secret",
+  expires_at: <%= Time.now + 1.day %>,
+  revoked_at: <%= Time.now %>
+}
