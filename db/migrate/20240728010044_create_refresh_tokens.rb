@@ -7,7 +7,6 @@ class CreateRefreshTokens < ActiveRecord::Migration[7.0]
       t.datetime :revoked_at
       t.datetime :replaced_at
 
-
       t.timestamps
     end
   end

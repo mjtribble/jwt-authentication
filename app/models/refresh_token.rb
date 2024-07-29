@@ -3,7 +3,7 @@ class RefreshToken < ApplicationRecord
   belongs_to :user
   before_create :generate_secret
 
-  scope :active, -> { where('expires_at > ? AND revoked_at IS NULL AND replaced_at IS NULL', Time.current) }
+  scope :active, -> { where("expires_at > ? AND revoked_at IS NULL AND replaced_at IS NULL", Time.current) }
 
   def expired?
     Time.current >= expires_at

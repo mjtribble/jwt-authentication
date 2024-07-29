@@ -1,4 +1,4 @@
-require 'jwt'
+require "jwt"
 
 module AuthService
   class << self
@@ -6,21 +6,20 @@ module AuthService
     RSA_PUBLIC = RSA_PRIVATE.public_key
     ACCESS_EXPIRATION = 30.minutes.from_now
     REFRESH_EXPIRATION = RefreshToken::EXPIRATION
-    ALGO = 'RS256'
-    
-    
+    ALGO = "RS256"
+
     def encode(payload)
       JWT.encode(payload, RSA_PRIVATE, ALGO)
     end
 
     def decode(token)
-      JWT.decode(token, RSA_PUBLIC, true, { algorithm: ALGO }).first
+      JWT.decode(token, RSA_PUBLIC, true, {algorithm: ALGO}).first
     rescue JWT::ExpiredSignature
     rescue JWT::DecodeError
     end
 
     def generate_tokens_for(user, access_exp: ACCESS_EXPIRATION, refresh_exp: REFRESH_EXPIRATION)
-      { 
+      {
         access_token: generate_access_token(user, expiration: access_exp),
         refresh_token: generate_refresh_token(user, expiration: refresh_exp)
       }
@@ -30,12 +29,12 @@ module AuthService
     # lib/auth_service.rb:30:in `generate_access_token'
     def generate_access_token(user, expiration: ACCESS_EXPIRATION)
       encode(
-          { 
-            user_id: user.id, 
-            iat: Time.now.utc.to_i, 
-            jti: SecureRandom.uuid,
-            exp: expiration.to_i
-          }
+        {
+          user_id: user.id,
+          iat: Time.now.utc.to_i,
+          jti: SecureRandom.uuid,
+          exp: expiration.to_i
+        }
       )
     end
 

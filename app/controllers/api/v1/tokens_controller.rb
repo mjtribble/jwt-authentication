@@ -1,11 +1,11 @@
 class Api::V1::TokensController < ApplicationController
   def validate
-    token = request.headers['Authorization']&.split(' ')&.last
+    token = request.headers["Authorization"]&.split(" ")&.last
     payload = AuthService.decode(token)
-    user_id = payload&.dig('user_id')
+    user_id = payload&.dig("user_id")
     if user_id && User.find(user_id)
       render status: :ok
-    else 
+    else
       render status: :unauthorized
     end
   end
@@ -17,12 +17,12 @@ class Api::V1::TokensController < ApplicationController
       render status: :unauthorized
     else
       new_access_token = AuthService.generate_access_token(refresh_token.user)
-      render json: { access_token: new_access_token, refresh_token: params[:refresh_token] }
+      render json: {access_token: new_access_token, refresh_token: params[:refresh_token]}
     end
   end
-  
+
   private
-  
+
   def token_params
     params.permit(:token, :refresh_token)
   end
